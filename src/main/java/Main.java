@@ -1,5 +1,7 @@
+
 public class Main {
     public static void main(String [] args){
-        System.out.println("hola daniel!");
+        ContrenedorGenerico<Integer> contenedor = new ContrenedorGenerico<Integer>(1);
+        System.out.printf("hola  %s ", contenedor.getObjeto());
     }
 }
