@@ -16,11 +16,12 @@ public abstract class Recurso {
         return id;
     }
 
-    public String nombre(){
+    public String getNombre(){
         return nombre;
     }
 
+    @Override
     public String toString(){
-        return "el ID es: " + id + " el Nombre es: " + nombre + "La Fecha de Registro es:" + fechaRegistro;
+        return "Recurso [ id = " + id + ", nombre = " + nombre +  ", fecha registro = " + fechaRegistro;
     }
 }

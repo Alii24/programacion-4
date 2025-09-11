@@ -6,12 +6,19 @@ import co.edu.itc.programacion.biblioteca.modelo.Computador;
 import co.edu.itc.programacion.biblioteca.modelo.Libro;
 import co.edu.itc.programacion.biblioteca.modelo.Periodico;
 import co.edu.itc.programacion.biblioteca.modelo.Recurso;
+import co.edu.itc.programacion.biblioteca.repositorio.RepositorioComputador;
+import co.edu.itc.programacion.biblioteca.repositorio.RepositorioLibro;
+import co.edu.itc.programacion.biblioteca.repositorio.RepositorioPeriodico;
 import co.edu.itc.programacion.biblioteca.repositorio.RepositorioRecurso;
 
 public class ServicioBiblioteca <T> {
-    private RepositorioRecurso<Libro> repositorioLibro;
-    private RepositorioRecurso<Periodico> repositorioPeriodico;
-    private RepositorioRecurso<Computador> repositorioComputador;
+    private RepositorioRecurso<Libro> repositorioLibro = new RepositorioLibro();
+    private RepositorioRecurso<Periodico> repositorioPeriodico = new RepositorioPeriodico();
+    private RepositorioRecurso<Computador> repositorioComputador = new RepositorioComputador();
+
+    public ServicioBiblioteca(){
+        
+    }
 
     public Recurso agregar(Recurso recurso) {
         

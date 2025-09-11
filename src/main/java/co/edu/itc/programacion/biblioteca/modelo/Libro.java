@@ -23,8 +23,8 @@ public class Libro extends Recurso {
     public String getIsbn(){
         return isbn;
     }
-
+    @Override
     public String toString(){
-        return "El Autor del libro es: " + autor + " Fue publicado en el año " + anio + " Y su codigo ISBN es " + isbn;
+        return "Libro [ id = " + getId() + ", nombre = " + getNombre() + ", autor = " + autor + ", año = " + anio + ", isbn = " + isbn;
     }
 }

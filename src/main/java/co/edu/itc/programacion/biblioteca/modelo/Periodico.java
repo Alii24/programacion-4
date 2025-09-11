@@ -18,7 +18,8 @@ public class Periodico extends Recurso{
         return anio;
     }
 
+    @Override
     public String toString(){
-        return "La Editorial es: " + editorial + "El Año es: " + anio;
+        return "Periodico [ id = " + getId() + ", nombre = " + getNombre() + ", Editorial = " + editorial + ", año = " + anio;
     }
 }

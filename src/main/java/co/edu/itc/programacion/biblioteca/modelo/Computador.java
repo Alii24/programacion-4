@@ -24,7 +24,8 @@ public class Computador extends Recurso {
         return tipo;
     }
 
+    @Override
     public String toString(){
-        return "La Marca es: " + marca + "El Modelo es: " + modelo + "El Tipo es: " + tipo;
+        return "Computador [ id = " + getId() + ", nombre = " + getNombre() + ", marca = " + marca + ", modelo = " + modelo + ", tipo = " + tipo + "]";
     }
 }
