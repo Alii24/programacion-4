@@ -2,10 +2,10 @@ package co.edu.itc.programacion.biblioteca.modelo;
 
 public class Libro extends Recurso {
     private String autor;
-    private int anio;
+    private Integer anio;
     private String isbn;
 
-    public Libro(int id, String nombre, String autor, int anio, String isbn){
+    public Libro(Integer id, String nombre, String autor, Integer anio, String isbn){
         super(id, nombre);
         this.autor = autor;
         this.anio = anio;
@@ -16,7 +16,7 @@ public class Libro extends Recurso {
         return autor;
     }
 
-    public int getAnio(){
+    public Integer getAnio(){
         return anio;
     }
 

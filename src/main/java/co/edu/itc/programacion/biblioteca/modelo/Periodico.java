@@ -2,9 +2,9 @@ package co.edu.itc.programacion.biblioteca.modelo;
 
 public class Periodico extends Recurso{
     private String editorial;
-    private int anio;
+    private Integer anio;
     
-    public Periodico(int id, String nombre, String editorial, int anio){
+    public Periodico(Integer id, String nombre, String editorial, Integer anio){
         super(id, nombre);
         this.editorial = editorial;
         this.anio = anio;
@@ -14,7 +14,7 @@ public class Periodico extends Recurso{
         return editorial;
     }
 
-    public int getAnio(){
+    public Integer getAnio(){
         return anio;
     }
 

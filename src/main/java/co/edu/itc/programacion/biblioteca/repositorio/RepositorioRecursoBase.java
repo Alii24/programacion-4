@@ -21,13 +21,13 @@ public abstract class RepositorioRecursoBase<T> implements RepositorioRecurso<T>
     }
 
     @Override
-    public T actualizar(int id, T recurso){
+    public T actualizar(Integer id, T recurso){
         listaRecurso.set(id, recurso);
         return recurso;
     }
 
     @Override
-    public boolean eliminar(int id){
+    public boolean eliminar(Integer id){
         if (id < listaRecurso.size()){
             listaRecurso.remove(id);
             return true;
@@ -37,7 +37,7 @@ public abstract class RepositorioRecursoBase<T> implements RepositorioRecurso<T>
     }
 
     @Override
-    public T obtener(int id){
+    public T obtener(Integer id){
         if (id < listaRecurso.size()){
             return listaRecurso.get(id);
         } else {

@@ -2,17 +2,17 @@ package co.edu.itc.programacion.biblioteca.modelo;
 import java.time.LocalDateTime;
 
 public abstract class Recurso {
-    private int id;
+    private Integer id;
     private String nombre;
     private LocalDateTime fechaRegistro;
 
-    public Recurso(int id, String nombre){
+    public Recurso(Integer id, String nombre){
         this.id = id;
         this.nombre = nombre;
         this.fechaRegistro = LocalDateTime.now();
     }
 
-    public int getId(){
+    public Integer getId(){
         return id;
     }
 
