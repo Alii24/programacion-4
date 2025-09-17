@@ -3,11 +3,13 @@ package co.edu.itc.programacion.biblioteca;
 import co.edu.itc.programacion.biblioteca.modelo.Computador;
 import co.edu.itc.programacion.biblioteca.modelo.Libro;
 import co.edu.itc.programacion.biblioteca.modelo.Periodico;
+import co.edu.itc.programacion.biblioteca.modelo.Recurso;
 import co.edu.itc.programacion.biblioteca.modelo.TipoComputador;
 import co.edu.itc.programacion.biblioteca.repositorio.RepositorioComputador;
 import co.edu.itc.programacion.biblioteca.repositorio.RepositorioLibro;
 import co.edu.itc.programacion.biblioteca.repositorio.RepositorioPeriodico;
 import co.edu.itc.programacion.biblioteca.servicio.ServicioBiblioteca;
+import java.util.List;
 
 public class ServicioBibliotec {
     public static void main(String [] args){
@@ -29,7 +31,36 @@ public class ServicioBibliotec {
         servicio.agregar(new Computador(8, "Pavilion 15", "HP", "15-eh2006la", TipoComputador.PORTATIL));
         servicio.agregar(new Computador(9, "Inspiron Desktop", "Dell", "Inspiron 3891", TipoComputador.ESCRITORIO));
     
+        List<Recurso> resultados = servicio.buscarPorCriterio("olvido");
+        System.out.println("Recursos que tienen: 'olvido': ");
+        for (Recurso result : resultados) {
+            System.out.println(result);
+        }
         
+        if (!resultados.isEmpty()) {
+            Recurso cambio = resultados.get(0);
+            cambio.setNombre("Nos olvidamos de ti");
+            servicio.modificar(cambio.getId(), cambio);
+            System.out.println("Primer recurso modificado: " + cambio);
+        } else {
+            System.out.println("No se encontraron recursos con ese criterio");
+        }
+
+        List<Recurso> eliminar = servicio.buscarPorCriterio("Delirio");
+        if (!eliminar.isEmpty()) {
+            for (Recurso elim : eliminar) {
+                if (elim instanceof Computador) {
+                    servicio.eliminarComputador(elim.getId());
+                } else if (elim instanceof Libro) {
+                    servicio.eliminarLibro(elim.getId());
+                } else if (elim instanceof Periodico) {
+                    servicio.eliminarPeriodico(elim.getId());
+                }
+                System.out.println("Recurso(s) eliminado(s): " + elim);
+            }
+        } else {
+            System.out.println("No se encontraron recursos con ese criterio");
+        }
 
         System.out.println("Recursos obtenidos: ");
         servicio.listarTodos().forEach(System.out::println);
