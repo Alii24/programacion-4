@@ -39,14 +39,20 @@ public class ServicioBibliotec {
         
         if (!resultados.isEmpty()) {
             Recurso cambio = resultados.get(0);
-            cambio.setNombre("Nos olvidamos de ti");
+            if (cambio instanceof Libro libro) {
+                cambio = new Libro(libro.getId(), "Nos olvidamos de ti", libro.getAutor(), libro.getAnio(), libro.getIsbn());
+            } else if (cambio instanceof Computador computador) {
+                cambio = new Computador(computador.getId(), "Nos olvidamos de ti", computador.getMarca(), computador.getModelo(), computador.getTipo());
+            } else if (cambio instanceof Periodico periodico) {
+                cambio = new Periodico(periodico.getId(), "Nos olvidamos de ti", periodico.getEditorial(), periodico.getAnio());
+            }
             servicio.modificar(cambio.getId(), cambio);
             System.out.println("Primer recurso modificado: " + cambio);
         } else {
             System.out.println("No se encontraron recursos con ese criterio");
         }
 
-        List<Recurso> eliminar = servicio.buscarPorCriterio("Delirio");
+        List<Recurso> eliminar = servicio.buscarPorCriterio("hojarasca");
         if (!eliminar.isEmpty()) {
             for (Recurso elim : eliminar) {
                 if (elim instanceof Computador) {
