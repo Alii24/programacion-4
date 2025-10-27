@@ -7,82 +7,92 @@ import co.edu.itc.programacion.biblioteca.modelo.Recurso;
 import co.edu.itc.programacion.biblioteca.repositorio.RepositorioComputador;
 import co.edu.itc.programacion.biblioteca.repositorio.RepositorioLibro;
 import co.edu.itc.programacion.biblioteca.repositorio.RepositorioPeriodico;
-import co.edu.itc.programacion.biblioteca.repositorio.RepositorioRecurso;
+
+import org.springframework.stereotype.Service; 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors; 
+import java.util.stream.StreamSupport; 
 
-public class ServicioBiblioteca <T> {
-    private RepositorioRecurso<Libro> repositorioLibro = new RepositorioLibro();
-    private RepositorioRecurso<Periodico> repositorioPeriodico = new RepositorioPeriodico();
-    private RepositorioRecurso<Computador> repositorioComputador = new RepositorioComputador();
+@Service
+public class ServicioBiblioteca {
+    private final RepositorioLibro repositorioLibro;
+    private final RepositorioPeriodico repositorioPeriodico;
+    private final RepositorioComputador repositorioComputador;
 
-    public ServicioBiblioteca(){
-        
+    public ServicioBiblioteca(
+        RepositorioLibro repositorioLibro,
+        RepositorioPeriodico repositorioPeriodico,
+        RepositorioComputador repositorioComputador) 
+    {
+        this.repositorioLibro = repositorioLibro;
+        this.repositorioPeriodico = repositorioPeriodico;
+        this.repositorioComputador = repositorioComputador;
     }
 
     public Recurso agregar(Recurso recurso) {
         if (recurso == null) throw new IllegalArgumentException("el recurso es nulo");
 
         if (recurso instanceof Libro) {
-            repositorioLibro.guardar((Libro) recurso);
+            return repositorioLibro.save((Libro) recurso);
         } else if (recurso instanceof Periodico) {
-            repositorioPeriodico.guardar((Periodico) recurso);
+            return repositorioPeriodico.save((Periodico) recurso);
         } else if (recurso instanceof Computador) {
-            repositorioComputador.guardar((Computador) recurso);
+            return repositorioComputador.save((Computador) recurso);
         } else {
             throw new IllegalArgumentException("no se reconoce el recurso");
         }
-        return recurso;
     }
 
     public Recurso modificar(Integer id, Recurso recurso) {
-        if (recurso == null) throw new IllegalArgumentException("el recurso es nulo\"");
-
+        if (recurso == null) throw new IllegalArgumentException("el recurso es nulo");
         if (recurso instanceof Libro) {
-            repositorioLibro.actualizar(id, (Libro) recurso);
+             return repositorioLibro.save((Libro) recurso);
         } else if (recurso instanceof Periodico) {
-            repositorioPeriodico.actualizar(id, (Periodico) recurso);
+            return repositorioPeriodico.save((Periodico) recurso);
         } else if (recurso instanceof Computador) {
-            repositorioComputador.actualizar(id, (Computador) recurso);
+            return repositorioComputador.save((Computador) recurso);
         } else {
             throw new IllegalArgumentException("no se reconoce el recurso");
         }
-        return recurso;
     }
 
     public boolean eliminarLibro(Integer id) {
          if (id == null) 
             throw new IllegalArgumentException("el id es nulo");
 
-        return repositorioLibro.eliminar(id);
+        repositorioLibro.deleteById(id);
+        return !repositorioLibro.existsById(id); 
     }
 
     public boolean eliminarPeriodico(Integer id) {
         if (id == null) 
             throw new IllegalArgumentException("el id es nulo");
 
-        return repositorioPeriodico.eliminar(id);
+        repositorioPeriodico.deleteById(id);
+        return !repositorioPeriodico.existsById(id);
     }
 
     public boolean eliminarComputador(Integer id) {
         if (id == null) 
             throw new IllegalArgumentException("el id es nulo");
 
-        return repositorioComputador.eliminar(id);
+        repositorioComputador.deleteById(id);
+        return !repositorioComputador.existsById(id);
     }
 
     public List<Recurso> listarTodos() {
         List<Recurso> todos = new ArrayList<>();
-        todos.addAll(repositorioLibro.listarTodos());
-        todos.addAll(repositorioPeriodico.listarTodos());
-        todos.addAll(repositorioComputador.listarTodos());
+        StreamSupport.stream(repositorioLibro.findAll().spliterator(), false).forEach(todos::add);
+        StreamSupport.stream(repositorioPeriodico.findAll().spliterator(), false).forEach(todos::add);
+        StreamSupport.stream(repositorioComputador.findAll().spliterator(), false).forEach(todos::add);
+        
         return todos;
     }
 
     public List<Recurso> buscarPorCriterio(String criterio) {
         if (criterio == null) 
             throw new IllegalArgumentException("el criterio es nulo");
-
         List<Recurso> busqueda = new ArrayList<>();
         busqueda.addAll(repositorioLibro.buscarPorCriterio(criterio));
         busqueda.addAll(repositorioPeriodico.buscarPorCriterio(criterio));
@@ -93,21 +103,20 @@ public class ServicioBiblioteca <T> {
     public Libro obtenerLibro(Integer id) {
         if (id == null) 
             throw new IllegalArgumentException("el id es nulo");
-
-        return repositorioLibro.obtener(id);
+        return repositorioLibro.findById(id).orElse(null);
     }
 
     public Periodico obtenerPeriodico(Integer id) {
         if (id == null) 
             throw new IllegalArgumentException("el id es nulo");
 
-        return repositorioPeriodico.obtener(id);
+        return repositorioPeriodico.findById(id).orElse(null);
     }
 
     public Computador obtenerComputador(Integer id) {
         if (id == null) 
             throw new IllegalArgumentException("el id es nulo");
 
-        return repositorioComputador.obtener(id);
+        return repositorioComputador.findById(id).orElse(null);
     }
 }

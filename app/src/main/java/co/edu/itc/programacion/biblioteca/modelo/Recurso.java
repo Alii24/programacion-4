@@ -1,7 +1,9 @@
 package co.edu.itc.programacion.biblioteca.modelo;
 import java.time.LocalDateTime;
+import org.springframework.data.annotation.Id;
 
 public abstract class Recurso {
+    @Id 
     private Integer id;
     private String nombre;
     private LocalDateTime fechaRegistro;

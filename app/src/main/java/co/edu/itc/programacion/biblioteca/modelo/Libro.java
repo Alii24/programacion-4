@@ -1,5 +1,9 @@
 package co.edu.itc.programacion.biblioteca.modelo;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+@Table("LIBRO")
 public class Libro extends Recurso {
     private String autor;
     private Integer anio;

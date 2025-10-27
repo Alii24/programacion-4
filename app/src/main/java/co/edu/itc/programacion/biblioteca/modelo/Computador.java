@@ -1,5 +1,9 @@
 package co.edu.itc.programacion.biblioteca.modelo;
 
+import org.springframework.data.relational.core.mapping.Table;
+
+// CC-06: Anotar entidad concreta con @Table("COMPUTADOR") 
+@Table("COMPUTADOR")
 public class Computador extends Recurso {
     private String marca;
     private String modelo;
