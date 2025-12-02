@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Computador</title>
+
+    <script>
+        const params = new URLSearchParams(location.search);
+        const id = params.get("id");
+
+        async function cargar() {
+            if (id) {
+                const r = await fetch(`/api/computadores/${id}`);
+                const c = await r.json();
+
+                document.getElementById("nombre").value = c.nombre;
+                document.getElementById("marca").value = c.marca;
+                document.getElementById("modelo").value = c.modelo;
+                document.getElementById("tipo").value = c.tipoComputador;
+            }
+        }
+
+        async function guardar() {
+            const cuerpo = {
+                nombre: document.getElementById("nombre").value,
+                marca: document.getElementById("marca").value,
+                modelo: document.getElementById("modelo").value,
+                tipoComputador: document.getElementById("tipo").value
+            };
+
+            if (id) {
+                await fetch(`/api/computadores/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(cuerpo)
+                });
+            } else {
+                await fetch("/api/computadores", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(cuerpo)
+                });
+            }
+
+            alert("Guardado correctamente");
+            location.href = "index.html";
+        }
+
+        window.onload = cargar;
+    </script>
+</head>
+
+<body>
+    <h2>Registrar/Editar Computador</h2>
+
+    <label>Nombre:</label>
+    <input id="nombre"><br><br>
+
+    <label>Marca:</label>
+    <input id="marca"><br><br>
+
+    <label>Modelo:</label>
+    <input id="modelo"><br><br>
+
+    <label>Tipo:</label>
+    <select id="tipo">
+        <option value="ESCRITORIO">Escritorio</option>
+        <option value="PORTATIL">Portátil</option>
+        <option value="TABLET">Tablet</option>
+    </select><br><br>
+
+    <button onclick="guardar()">Guardar</button>
+    <button onclick="location.href='index.html'">Cancelar</button>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Periódico</title>
+
+    <script>
+        const params = new URLSearchParams(location.search);
+        const id = params.get("id");
+
+        async function cargar() {
+            if (id) {
+                const r = await fetch(`/api/periodicos/${id}`);
+                const p = await r.json();
+
+                document.getElementById("nombre").value = p.nombre;
+                document.getElementById("editorial").value = p.editorial;
+                document.getElementById("anio").value = p.anio;
+            }
+        }
+
+        async function guardar() {
+            const cuerpo = {
+                nombre: document.getElementById("nombre").value,
+                editorial: document.getElementById("editorial").value,
+                anio: parseInt(document.getElementById("anio").value)
+            };
+
+            if (id) {
+                await fetch(`/api/periodicos/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(cuerpo)
+                });
+            } else {
+                await fetch("/api/periodicos", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(cuerpo)
+                });
+            }
+
+            alert("Guardado correctamente");
+            location.href = "index.html";
+        }
+
+        window.onload = cargar;
+    </script>
+</head>
+
+<body>
+    <h2>Registrar/Editar Periódico</h2>
+
+    <label>Nombre:</label>
+    <input id="nombre"><br><br>
+
+    <label>Editorial:</label>
+    <input id="editorial"><br><br>
+
+    <label>Año:</label>
+    <input id="anio" type="number"><br><br>
+
+    <button onclick="guardar()">Guardar</button>
+    <button onclick="location.href='index.html'">Cancelar</button>
+</body>
+</html>

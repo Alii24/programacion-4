@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Libro</title>
+
+    <script>
+        const params = new URLSearchParams(location.search);
+        const id = params.get("id");
+
+        async function cargar() {
+            if (id) {
+                const r = await fetch(`/api/libros/${id}`);
+                const libro = await r.json();
+
+                document.getElementById("nombre").value = libro.nombre;
+                document.getElementById("autor").value = libro.autor;
+                document.getElementById("anio").value = libro.anio;
+                document.getElementById("isbn").value = libro.isbn;
+            }
+        }
+
+        async function guardar() {
+            const cuerpo = {
+                nombre: document.getElementById("nombre").value,
+                autor: document.getElementById("autor").value,
+                anio: parseInt(document.getElementById("anio").value),
+                isbn: document.getElementById("isbn").value
+            };
+
+            if (id) {
+                await fetch(`/api/libros/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(cuerpo)
+                });
+            } else {
+                await fetch("/api/libros", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(cuerpo)
+                });
+            }
+
+            alert("Guardado correctamente");
+            location.href = "index.html";
+        }
+
+        window.onload = cargar;
+    </script>
+</head>
+
+<body>
+    <h2>Registrar/Editar Libro</h2>
+
+    <label>Nombre:</label>
+    <input id="nombre"><br><br>
+
+    <label>Autor:</label>
+    <input id="autor"><br><br>
+
+    <label>Año:</label>
+    <input id="anio" type="number"><br><br>
+
+    <label>ISBN:</label>
+    <input id="isbn"><br><br>
+
+    <button onclick="guardar()">Guardar</button>
+    <button onclick="location.href='index.html'">Cancelar</button>
+</body>
+</html>

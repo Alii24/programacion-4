@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca - Recursos</title>
+    <script>
+        async function cargarRecursos() {
+            const respuesta = await fetch("/api/recursos");
+            const datos = await respuesta.json();
+
+            const tabla = document.getElementById("tabla");
+
+            tabla.innerHTML = datos.map(r => `
+                <tr>
+                    <td>${r.id}</td>
+                    <td>${r.nombre}</td>
+                    <td>${r.tipo}</td>
+                    <td>
+                        <button onclick="editar('${r.tipo}', ${r.id})">Editar</button>
+                        <button onclick="eliminar('${r.tipo}', ${r.id})">Eliminar</button>
+                    </td>
+                </tr>
+            `).join("");
+        }
+
+        function editar(tipo, id) {
+            location.href = tipo + "-form.html?id=" + id;
+        }
+
+        async function eliminar(tipo, id) {
+            if (!confirm("¿Seguro que deseas eliminarlo?")) return;
+
+            await fetch(`/api/${tipo}s/${id}`, { method: "DELETE" });
+            alert("Eliminado correctamente");
+            location.reload();
+        }
+
+        function crear(tipo) {
+            location.href = tipo + "-form.html";
+        }
+
+        window.onload = cargarRecursos;
+    </script>
+</head>
+<body>
+    <h1>Bienvenido a la Biblioteca</h1>
+
+    <button onclick="crear('libro')">Nuevo Libro</button>
+    <button onclick="crear('periodico')">Nuevo Periódico</button>
+    <button onclick="crear('computador')">Nuevo Computador</button>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tabla"></tbody>
+    </table>
+</body>
+</html>
