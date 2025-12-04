@@ -1,10 +1,14 @@
 package co.edu.itc.programacion.biblioteca.modelo;
 
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table("PERIODICO")
 public class Periodico extends Recurso{
+     @Column("EDITORIAL")
     private String editorial;
+
+    @Column("ANIO")
     private Integer anio;
     
     public Periodico(Integer id, String nombre, String editorial, Integer anio){

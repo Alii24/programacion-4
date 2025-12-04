@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo / Editar Computador</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        input, select { display:block; margin-bottom:10px; width:250px; padding:5px; }
+        button { margin-right:10px; }
+    </style>
+</head>
+<body>
+
+<h2 id="titulo">Nuevo Computador</h2>
+
+<label>Nombre</label>
+<input id="nombre">
+
+<label>Marca</label>
+<input id="marca">
+
+<label>Modelo</label>
+<input id="modelo">
+
+<label>Tipo</label>
+<select id="tipo">
+    <option value="ESCRITORIO">ESCRITORIO</option>
+    <option value="PORTATIL">PORTATIL</option>
+    <option value="TABLET">TABLET</option>
+</select>
+
+<button onclick="guardar()">Guardar</button>
+<button onclick="location.href='index.html'">Cancelar</button>
+
+<script>
+let id = new URLSearchParams(window.location.search).get("id");
+let modoEdicion = id !== null;
+
+if (modoEdicion) {
+    document.getElementById("titulo").textContent = "Editar Computador";
+    cargar();
+}
+
+async function cargar() {
+    const resp = await fetch("/api/computadores/" + id);
+    const c = await resp.json();
+
+    document.getElementById("nombre").value = c.nombre;
+    document.getElementById("marca").value = c.marca;
+    document.getElementById("modelo").value = c.modelo;
+    document.getElementById("tipo").value = c.tipo;
+}
+
+async function guardar() {
+    const objeto = {
+        nombre: document.getElementById("nombre").value,
+        marca: document.getElementById("marca").value,
+        modelo: document.getElementById("modelo").value,
+        tipo: document.getElementById("tipo").value
+    };
+
+    if (modoEdicion) {
+        await fetch("/api/computadores/" + id, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(objeto)
+        });
+    } else {
+        await fetch("/api/computadores", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(objeto)
+        });
+    }
+
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

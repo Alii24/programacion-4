@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo / Editar Periódico</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        input { display:block; margin-bottom:10px; width:250px; padding:5px; }
+        button { margin-right:10px; }
+    </style>
+</head>
+<body>
+
+<h2 id="titulo">Nuevo Periódico</h2>
+
+<label>Nombre</label>
+<input id="nombre">
+
+<label>Editorial</label>
+<input id="editorial">
+
+<label>Año</label>
+<input id="anio" type="number">
+
+<button onclick="guardar()">Guardar</button>
+<button onclick="location.href='index.html'">Cancelar</button>
+
+<script>
+let id = new URLSearchParams(window.location.search).get("id");
+let modoEdicion = id !== null;
+
+if (modoEdicion) {
+    document.getElementById("titulo").textContent = "Editar Periódico";
+    cargar();
+}
+
+async function cargar() {
+    const resp = await fetch("/api/periodicos/" + id);
+    const p = await resp.json();
+
+    document.getElementById("nombre").value = p.nombre;
+    document.getElementById("editorial").value = p.editorial;
+    document.getElementById("anio").value = p.anio;
+}
+
+async function guardar() {
+    const objeto = {
+        nombre: document.getElementById("nombre").value,
+        editorial: document.getElementById("editorial").value,
+        anio: parseInt(document.getElementById("anio").value)
+    };
+
+    if (modoEdicion) {
+        await fetch("/api/periodicos/" + id, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(objeto)
+        });
+    } else {
+        await fetch("/api/periodicos", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(objeto)
+        });
+    }
+
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
