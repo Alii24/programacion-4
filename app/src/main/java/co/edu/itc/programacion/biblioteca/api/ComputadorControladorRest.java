@@ -1,8 +1,9 @@
 package co.edu.itc.programacion.biblioteca.api;
 
+import co.edu.itc.programacion.biblioteca.api.mapper.RecursoMapper;
+import co.edu.itc.programacion.biblioteca.modelo.Computador;
 import co.edu.itc.programacion.biblioteca.representacion.ComputadorRepresentacion;
 import co.edu.itc.programacion.biblioteca.servicio.ServicioBiblioteca;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/computadores")
@@ -16,18 +17,21 @@ public class ComputadorControladorRest {
 
     @GetMapping("/{id}")
     public ComputadorRepresentacion obtenerPorId(@PathVariable Integer id) {
-        return biblioteca.obtenerComputadorDTO(id);
+        Computador c = biblioteca.obtenerComputador(id);
+        return (ComputadorRepresentacion) RecursoMapper.aRepresentacion(c);
     }
 
     @PostMapping
-    public void crear(@RequestBody ComputadorRepresentacion computador) {
-        biblioteca.crearComputadorDTO(computador);
+    public void crear(@RequestBody ComputadorRepresentacion dto) {
+        Computador c = (Computador) RecursoMapper.aEntidad(dto);
+        biblioteca.agregar(c);
     }
 
     @PutMapping("/{id}")
     public void modificar(@PathVariable Integer id,
-                          @RequestBody ComputadorRepresentacion computador) {
-        biblioteca.modificarComputadorDTO(id, computador);
+                           @RequestBody ComputadorRepresentacion dto) {
+        Computador c = (Computador) RecursoMapper.aEntidad(dto);
+        biblioteca.modificar(id, c);
     }
 
     @DeleteMapping("/{id}")

@@ -1,5 +1,7 @@
 package co.edu.itc.programacion.biblioteca.api;
 
+import co.edu.itc.programacion.biblioteca.api.mapper.RecursoMapper;
+import co.edu.itc.programacion.biblioteca.modelo.Libro;
 import co.edu.itc.programacion.biblioteca.representacion.LibroRepresentacion;
 import co.edu.itc.programacion.biblioteca.servicio.ServicioBiblioteca;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +18,21 @@ public class LibroControladorRest {
 
     @GetMapping("/{id}")
     public LibroRepresentacion obtenerPorId(@PathVariable Integer id) {
-        return biblioteca.obtenerLibroDTO(id);
+        Libro libro = biblioteca.obtenerLibro(id);
+        return (LibroRepresentacion) RecursoMapper.aRepresentacion(libro);
     }
 
     @PostMapping
-    public void crear(@RequestBody LibroRepresentacion libro) {
-        biblioteca.crearLibroDTO(libro);
+    public void crear(@RequestBody LibroRepresentacion dto) {
+        Libro libro = (Libro) RecursoMapper.aEntidad(dto);
+        biblioteca.agregar(libro);
     }
 
     @PutMapping("/{id}")
-    public void modificar(@PathVariable Integer id, @RequestBody LibroRepresentacion libro) {
-        biblioteca.modificarLibroDTO(id, libro);
+    public void modificar(@PathVariable Integer id,
+                           @RequestBody LibroRepresentacion dto) {
+        Libro libro = (Libro) RecursoMapper.aEntidad(dto);
+        biblioteca.modificar(id, libro);
     }
 
     @DeleteMapping("/{id}")
@@ -34,3 +40,4 @@ public class LibroControladorRest {
         biblioteca.eliminarLibro(id);
     }
 }
+

@@ -1,5 +1,6 @@
 package co.edu.itc.programacion.biblioteca.api;
 
+import co.edu.itc.programacion.biblioteca.api.mapper.RecursoMapper;
 import co.edu.itc.programacion.biblioteca.representacion.RecursoRepresentacion;
 import co.edu.itc.programacion.biblioteca.servicio.ServicioBiblioteca;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ public class RecursoControladorRest {
 
     @GetMapping
     public List<RecursoRepresentacion> listar() {
-        return biblioteca.listarTodosDTO();
+        return biblioteca.listarTodos().stream()
+                .map(RecursoMapper::aRepresentacion)
+                .toList();
     }
 }
