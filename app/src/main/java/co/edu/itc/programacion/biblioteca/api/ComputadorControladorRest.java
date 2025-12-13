@@ -4,6 +4,7 @@ import co.edu.itc.programacion.biblioteca.api.mapper.RecursoMapper;
 import co.edu.itc.programacion.biblioteca.modelo.Computador;
 import co.edu.itc.programacion.biblioteca.representacion.ComputadorRepresentacion;
 import co.edu.itc.programacion.biblioteca.servicio.ServicioBiblioteca;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/computadores")
