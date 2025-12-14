@@ -10,8 +10,10 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 
 @Configuration
+@EnableJdbcRepositories("co.edu.itc.programacion.biblioteca.repositorio")
 public class ConfiguracionAplicacion extends AbstractJdbcConfiguration {
 
     @Bean
