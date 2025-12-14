@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface RepositorioLibro extends CrudRepository<Libro, Integer> {
     @Query("SELECT * FROM LIBRO WHERE LOWER(AUTOR) LIKE CONCAT('%', LOWER(:criterio), '%') OR LOWER(NOMBRE) LIKE CONCAT('%', LOWER(:criterio), '%') OR LOWER(ISBN) LIKE CONCAT('%', LOWER(:criterio), '%')")
-    List<Libro> buscarPorCriterio(String criterio);
+    List<Libro> buscarPorCriterio(@Param("criterio") String criterio);
 }
