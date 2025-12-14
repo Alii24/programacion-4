@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface RepositorioPeriodico extends CrudRepository<Periodico, Integer> {
     @Query("SELECT * FROM PERIODICO WHERE LOWER(EDITORIAL) LIKE CONCAT('%', LOWER(:criterio), '%') OR LOWER(NOMBRE) LIKE CONCAT('%', LOWER(:criterio), '%')")
-    List<Periodico> buscarPorCriterio(String criterio);
+    List<Periodico> buscarPorCriterio(@Param("criterio") String criterio);
 }
