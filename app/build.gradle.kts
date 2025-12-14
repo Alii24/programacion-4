@@ -12,13 +12,19 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     implementation(libs.guava)
+
     implementation("org.springframework:spring-context:6.2.11")
     implementation("org.springframework:spring-aspects:6.2.11")
     implementation("org.aspectj:aspectjweaver:1.9.24")
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // Base de datos
     implementation("com.h2database:h2:2.4.240")
     implementation("org.springframework.data:spring-data-jdbc:3.5.4")
     implementation("org.springframework:spring-jdbc:6.2.11")
 }
+
 
 java {
     toolchain {
