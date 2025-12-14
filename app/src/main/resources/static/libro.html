@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo / Editar Libro</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        input { display:block; margin-bottom:10px; width:250px; padding:5px; }
+        button { margin-right:10px; }
+    </style>
+</head>
+<body>
+
+<h2 id="titulo">Nuevo Libro</h2>
+
+<label>Nombre</label>
+<input id="nombre">
+
+<label>Autor</label>
+<input id="autor">
+
+<label>Año</label>
+<input id="anio" type="number">
+
+<label>ISBN</label>
+<input id="isbn">
+
+<button onclick="guardar()">Guardar</button>
+<button onclick="location.href='index.html'">Cancelar</button>
+
+<script>
+let id = new URLSearchParams(window.location.search).get("id");
+let modoEdicion = id !== null;
+
+if (modoEdicion) {
+    document.getElementById("titulo").textContent = "Editar Libro";
+    cargar();
+}
+
+async function cargar() {
+    const resp = await fetch("/api/libros/" + id);
+    const libro = await resp.json();
+
+    document.getElementById("nombre").value = libro.nombre;
+    document.getElementById("autor").value = libro.autor;
+    document.getElementById("anio").value = libro.anio;
+    document.getElementById("isbn").value = libro.isbn;
+}
+
+async function guardar() {
+    const objeto = {
+        nombre: document.getElementById("nombre").value,
+        autor: document.getElementById("autor").value,
+        anio: parseInt(document.getElementById("anio").value),
+        isbn: document.getElementById("isbn").value
+    };
+
+    if (modoEdicion) {
+        await fetch("/api/libros/" + id, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(objeto)
+        });
+    } else {
+        await fetch("/api/libros", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(objeto)
+        });
+    }
+
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

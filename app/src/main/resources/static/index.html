@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Recursos de la Biblioteca</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #f4f4f4; }
+        button { margin-right: 5px; }
+    </style>
+</head>
+<body>
+
+<h1>Gestión de Recursos de la Biblioteca</h1>
+
+<button onclick="location.href='libro.html'">Nuevo Libro</button>
+<button onclick="location.href='periodico.html'">Nuevo Periódico</button>
+<button onclick="location.href='computador.html'">Nuevo Computador</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Fecha Registro</th>
+            <th>Tipo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody id="tabla">
+    </tbody>
+</table>
+
+<script>
+async function cargarRecursos() {
+    const respuesta = await fetch("/api/recursos");
+    const datos = await respuesta.json();
+
+    const tabla = document.getElementById("tabla");
+    tabla.innerHTML = "";
+
+    datos.forEach(r => {
+        const fila = document.createElement("tr");
+
+        fila.innerHTML = `
+            <td>${r.id}</td>
+            <td>${r.nombre}</td>
+            <td>${r.fechaRegistro}</td>
+            <td>${r.tipoRecurso}</td>
+            <td>
+                <button onclick="editar(${r.id}, '${r.tipoRecurso}')">Modificar</button>
+                <button onclick="eliminar(${r.id}, '${r.tipoRecurso}')">Eliminar</button>
+            </td>
+        `;
+
+        tabla.appendChild(fila);
+    });
+}
+
+function editar(id, tipo) {
+    window.location.href = tipo.toLowerCase() + ".html?id=" + id;
+}
+
+async function eliminar(id, tipo) {
+    let endpoint = "/api/" + tipo.toLowerCase() + "s/" + id;
+
+    await fetch(endpoint, { method: "DELETE" });
+    cargarRecursos();
+}
+
+cargarRecursos();
+</script>
+
+</body>
+</html>
