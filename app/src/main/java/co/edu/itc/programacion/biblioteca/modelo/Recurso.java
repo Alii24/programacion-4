@@ -3,9 +3,14 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 
 public abstract class Recurso {
-    @Id 
+    @Id
+    @Column("ID")
     private Integer id;
+
+    @Column("NOMBRE")
     private String nombre;
+
+    @Column("FECHA_REGISTRO")
     private LocalDateTime fechaRegistro;
 
     public Recurso(Integer id, String nombre){
